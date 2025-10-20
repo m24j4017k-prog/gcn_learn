@@ -1,0 +1,31 @@
+import argparse
+
+def get_parser():
+    parser = argparse.ArgumentParser(description="コマンドラインでの設定の読み取り")
+    parser.add_argument("--config", default="config/default.yaml", help="コンフィグファイル名")
+    parser.add_argument("--work_dir", type=str, default="results/work_dir", help="保存場所の指定")
+    parser.add_argument("--model", type=str, default="modelst_gcn.Model", help="モデル名")
+    parser.add_argument("--model_args", type=dict, default=None)
+    parser.add_argument("--loss", type=str, default=None)
+    parser.add_argument("--loss_args", type=dict, default=None)
+    parser.add_argument("--evaluation_method", type=str, default=None)
+    parser.add_argument("--train_data_path", type=str, default=None)
+    parser.add_argument("--train_label_path", type=str, default=None)
+    parser.add_argument("--test_data_path", type=str, default=None)
+    parser.add_argument("--test_label_path", type=str, default=None)
+    parser.add_argument('--leave_pair', type=int, nargs='+', default=[], help='leave pair IDs for evaluation')
+    parser.add_argument("--train_walkpath", type=int, nargs='+', default=[])
+    parser.add_argument("--test_walkpath", type=int, nargs='+', default=[])
+    parser.add_argument('--data_augment', type=str, default='{}')
+    parser.add_argument("--batch_size", type=int, default=32)
+    parser.add_argument("--num_epoch", type=int, default=20)
+    parser.add_argument("--device", type=int, nargs='+', default=[1])
+    parser.add_argument("--num_worker", type=int, default=16)
+    parser.add_argument('--optimizer', default='SGD', help='type of optimizer')
+    parser.add_argument("--base_lr", type=float, default=0.00002)
+    parser.add_argument("--weight_decay", type=float, default=0.0004)
+    parser.add_argument('--nesterov', type=bool, default=False, help='use nesterov or not')
+    parser.add_argument('--momentum', type=int, default=0.9)
+    parser.add_argument('--patience', type=int, default=5, help='early_stopping patience')
+    
+    return parser
