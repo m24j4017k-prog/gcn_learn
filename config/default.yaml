@@ -15,7 +15,6 @@ loss : torch.nn.CrossEntropyLoss
 loss_args : {}
 
 num_epoch : 3
-evaluation_method : walk_path_leave_pair_out
 train_data_path : ./data/MB_3DP/1/data.npy
 train_label_path : ./data/MB_3DP/1/label.npy
 test_data_path : ./data/MB_3DP/1/data.npy
