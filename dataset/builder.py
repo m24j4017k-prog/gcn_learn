@@ -16,6 +16,7 @@ def build_dataset(arg, split='train'):
     """
 
     if arg.evaluation_method == 'leave_pair_out':
+        print("this evaluation method is leave_pair_out method")
         DatasetClass = LeavePairOutTrainDataset if split == 'train' else LeavePairOutTestDataset
         dataset_kwargs = {
             'data_path': arg.train_data_path if split=='train' else arg.test_data_path,
@@ -29,6 +30,7 @@ def build_dataset(arg, split='train'):
 
 
     elif arg.evaluation_method == 'walk_path_leave_pair_out':
+        print("this evaluation method is walk_path_leave_pair_out method")
         DatasetClass = WalkPathLeavePairOutTrainDataset if split=='train' else WalkPathLeavePairOutTestDataset
         dataset_kwargs = {
             'data_path': arg.train_data_path if split=='train' else arg.test_data_path,
