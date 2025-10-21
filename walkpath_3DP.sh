@@ -1,5 +1,5 @@
 try="1 2 3"
-augument="0"
+
 
 
 for tr in $path1
@@ -11,8 +11,7 @@ do
                 for i in $(seq 1 13)
                 do
                     python main.py --config config/default.yaml \
-                    --evaluation_method walk_path_leave_pair_out
-                    --work-dir ./result/walk_path_leave_pair/4/STGCN/AUG$aug/train/$tr-$tr/$t/$(($i*4-3))-$(($i*4)) \
+                    --evaluation_method walk_path_leave_pair_out \
                     --train-data-path ./data/MB_3DP/$t/data.npy \
                     --train-label-path ./data/MB_3DP/$t/label.npy \
                     --train-walk-path $tr \
