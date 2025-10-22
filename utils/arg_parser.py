@@ -5,6 +5,7 @@ def get_parser():
     parser.add_argument("--config", default="config/default.yaml", help="コンフィグファイル名")
     parser.add_argument("--work_dir", type=str, default="results/work_dir", help="保存場所の指定")
     parser.add_argument("--model", type=str, default="modelst_gcn.Model", help="モデル名")
+    parser.add_argument('--phase', default='train', choices=['train', 'test'])
     parser.add_argument("--model_args", type=dict, default=None)
     parser.add_argument("--loss", type=str, default=None)
     parser.add_argument("--loss_args", type=dict, default=None)

@@ -10,11 +10,11 @@ def import_class(name):
     return mod
 
 
-def save_arg(arg):
+def save_arg(arg, processor):
     # save arg
     arg_dict = vars(arg)
-    if not os.path.exists(arg.work_dir):
-        os.makedirs(arg.work_dir)
-    with open('{}/config.yaml'.format(arg.work_dir), 'w') as f:
+    if not os.path.exists(processor.work_dir):
+        os.makedirs(processor.work_dir)
+    with open('{}/config.yaml'.format(processor.work_dir), 'w') as f:
         pprint(arg_dict)  
         yaml.dump(arg_dict, f)

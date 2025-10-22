@@ -1,4 +1,4 @@
-model: model.ctrgcn.Model
+model: model.st_gcn.Model
 
 model_args:
   in_channels: 3
@@ -24,4 +24,4 @@ train_walkpath : [1]
 test_walkpath : [1]
 batch_size : 32
 data_augment:
-  joint_courruption : True
+  joint_courruption : False

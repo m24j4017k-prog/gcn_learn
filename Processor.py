@@ -13,13 +13,22 @@ from trainer.train_loop import train_one_epoch, validate_one_epoch
 class Processor():
     def __init__(self, arg):
         
-        # ---設定ファイル読み込み・保存 ---
         self.arg = arg
-        save_arg(self.arg)
+        
+        # 実行結果ファイルの作成
+        if (self.arg.evaluation_method == "walk_path_leave_pair_out"):
+            self.work_dir = f"{self.arg.work_dir}/{self.arg.train_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
+            print("*****************")
+            print(self.work_dir)
+        # --work_dir ./results/leave_4_pair_out/CTRGCN/MB_3DP$aug/$t/$i \
+        # --work_dir ./results/walkpath/STGCN/MB_3DP0/$t/$train_path//$i \
+        # ---設定ファイル読み込み・保存 ---
+        
+        save_arg(self.arg, self)
         
         # 実行済みの場合は処理を中止
-        if os.path.isfile(f'{self.arg.work_dir}/results/val_acc.npy'):
-            print(f'{arg.work_dir}/acc_file is already existed')
+        if os.path.isfile(f"{self.work_dir}/results/val_acc.npy"):
+            print(f'{self.work_dir}/acc_file is already existed')
             exit()
       
         # --- モデル構築 ---
@@ -43,9 +52,19 @@ class Processor():
         self.val_acc_list = []
         
         # --- EarlyStopping ---
-        self.early_stopping = EarlyStopping(patience=self.arg.patience, path=f"{self.arg.work_dir}/best_model.pt")
+        self.early_stopping = EarlyStopping(patience=self.arg.patience, path=f"{self.work_dir}/best_model.pt")
 
-        
+
+    def start(self):
+        if self.arg['phase'] == 'train':
+            print("Starting test phase...")
+            self.train()
+
+        elif self.arg['phase'] == 'test':
+            print("Starting test phase...")
+            self.model.load_state_dict(torch.load(f"{self.work_dir}/best_model.pt"))
+            self.test() 
+
         
     def train(self):
         best_val_acc = 0.0
@@ -88,13 +107,37 @@ class Processor():
         test_loss, test_acc = validate_one_epoch(self)
         print(f"Final Test | Loss: {test_loss:.4f}, Acc: {test_acc:.2f}%")
         
-        os.makedirs(f'{self.arg.work_dir}/results', exist_ok=True)
-        np.save(f'{self.arg.work_dir}/results/train_loss', self.train_loss_list)
-        np.save(f'{self.arg.work_dir}/results/train_acc', self.train_acc_list)    
-        np.save(f'{self.arg.work_dir}/results/val_loss', self.val_loss_list)
-        np.save(f'{self.arg.work_dir}/results/val_acc', self.val_acc_list)
+        os.makedirs(f'{self.work_dir}/results', exist_ok=True)
+        np.save(f'{self.work_dir}/results/train_loss', self.train_loss_list)
+        np.save(f'{self.work_dir}/results/train_acc', self.train_acc_list)    
+        np.save(f'{self.work_dir}/results/val_loss', self.val_loss_list)
+        np.save(f'{self.work_dir}/results/val_acc', self.val_acc_list)
+
+
+    def test(self):
+        self.model.eval()
+        val_loss = 0
+        val_acc = 0
+
+        with torch.no_grad():
+            for data, label, index in self.data_loader['test']:
+                data = data.cuda()
+                label = label.cuda()
+                
+                output = self.model(data)
+                loss = self.loss(output, label)
+                val_loss += loss.item() 
+                val_acc += (output.max(1)[1] == label).sum().item()
+
+        avg_val_loss = val_loss / len(self.data_loader['test'].dataset)
+        avg_val_acc = val_acc / len(self.data_loader['test'].dataset)
+        
+        print (avg_val_loss, avg_val_acc)
     
-    
+        # os.makedirs(f'{self.arg.save_dir}/results', exist_ok=True)
+        # np.save(f'{self.arg.save_dir}/results/val_loss', avg_val_loss)
+        # np.save(f'{self.arg.save_dir}/results/val_acc', avg_val_acc)
+
     
     # ==========================
     #  損失関数構築メソッド
@@ -107,7 +150,9 @@ class Processor():
         return loss_fn
     
     
-
+    # ==========================
+    #  最適化関数構築メソッド
+    # ==========================
     def load_optimizer(self):
         if self.arg.optimizer == 'SGD':
             self.optimizer = optim.SGD(
