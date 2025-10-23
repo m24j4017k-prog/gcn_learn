@@ -13,6 +13,7 @@ from trainer.train_loop import train_one_epoch, validate_one_epoch
 class Processor():
     def __init__(self, arg):
         
+        # ---設定ファイル読み込み ---
         self.arg = arg
         
         # 実行結果ファイルの作成
@@ -20,14 +21,13 @@ class Processor():
             self.work_dir = f"{self.arg.work_dir}/{self.arg.train_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
             print("*****************")
             print(self.work_dir)
-        # --work_dir ./results/leave_4_pair_out/CTRGCN/MB_3DP$aug/$t/$i \
-        # --work_dir ./results/walkpath/STGCN/MB_3DP0/$t/$train_path//$i \
-        # ---設定ファイル読み込み・保存 ---
-        
+
+            
+        # ---設定ファイル保存 ---
         save_arg(self.arg, self)
         
         # 実行済みの場合は処理を中止
-        if os.path.isfile(f"{self.work_dir}/results/val_acc.npy"):
+        if os.path.isfile(f"{self.work_dir}/results/val_acc.npy") and self.arg.phase == 'train':
             print(f'{self.work_dir}/acc_file is already existed')
             exit()
       
@@ -56,13 +56,23 @@ class Processor():
 
 
     def start(self):
-        if self.arg['phase'] == 'train':
+        if self.arg.phase == 'train':
             print("Starting test phase...")
             self.train()
 
-        elif self.arg['phase'] == 'test':
+        elif self.arg.phase == 'test':
+            
+            self.test_work_dir = f"{self.arg.work_dir}/test/{self.arg.train_walkpath[0]}-{self.arg.test_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
+            if not os.path.exists(self.test_work_dir):
+                os.makedirs(self.test_work_dir)
+            else:
+                print("None train phase")
+            
+
             print("Starting test phase...")
             self.model.load_state_dict(torch.load(f"{self.work_dir}/best_model.pt"))
+           
+            
             self.test() 
 
         
@@ -135,8 +145,8 @@ class Processor():
         print (avg_val_loss, avg_val_acc)
     
         # os.makedirs(f'{self.arg.save_dir}/results', exist_ok=True)
-        # np.save(f'{self.arg.save_dir}/results/val_loss', avg_val_loss)
-        # np.save(f'{self.arg.save_dir}/results/val_acc', avg_val_acc)
+        np.save(f'{self.test_work_dir}/val_loss', avg_val_loss)
+        np.save(f'{self.test_work_dir}/val_acc', avg_val_acc)
 
     
     # ==========================
