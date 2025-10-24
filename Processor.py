@@ -21,6 +21,9 @@ class Processor():
             self.work_dir = f"{self.arg.work_dir}/{self.arg.train_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
             print("*****************")
             print(self.work_dir)
+        else:
+            self.work_dir = self.arg.work_dir
+        
 
             
         # ---設定ファイル保存 ---
@@ -57,7 +60,7 @@ class Processor():
 
     def start(self):
         if self.arg.phase == 'train':
-            print("Starting test phase...")
+            print("Starting train phase...")
             self.train()
 
         elif self.arg.phase == 'test':

@@ -1,0 +1,24 @@
+model: model.aagcn.Model
+
+model_args:
+  in_channels: 2
+  num_person: 2
+  num_class: 3
+  graph: graph.coco.Graph
+
+
+  graph_args:
+    labeling_mode: spatial
+
+
+loss : torch.nn.CrossEntropyLoss
+loss_args : {}
+
+num_epoch : 40
+patience : 5
+
+evaluation_method : leave_pair_out
+leave_pair : [1,2,3,4]
+batch_size : 32
+data_augment:
+  joint_courruption : False
