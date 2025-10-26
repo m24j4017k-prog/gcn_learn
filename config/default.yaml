@@ -14,9 +14,10 @@ model_args:
 loss : torch.nn.CrossEntropyLoss
 loss_args : {}
 
-num_epoch : 40
+num_epoch : 2
 patience : 7
 
+evaluation_method : leave_pair_out
 train_data_path : ./data/MB_3DP/1/data.npy
 train_label_path : ./data/MB_3DP/1/label.npy
 test_data_path : ./data/MB_3DP/1/data.npy

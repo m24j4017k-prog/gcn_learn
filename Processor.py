@@ -2,6 +2,7 @@ import os
 import torch
 import torch.optim as optim
 import numpy as np
+import time
 
 from dataset.builder import build_dataset
 from model.builder import build_model
@@ -60,8 +61,18 @@ class Processor():
 
     def start(self):
         if self.arg.phase == 'train':
+            
+            start_total = time.time()
+            save_path = os.path.join(self.arg.work_dir, "execution_time.npy")
+            
             print("Starting train phase...")
             self.train()
+            
+            end_total = time.time()
+            total_time = end_total - start_total
+            
+            print(f"Total training time: {total_time:.2f} sec")
+            np.save(save_path, np.array(total_time))
 
         elif self.arg.phase == 'test':
             

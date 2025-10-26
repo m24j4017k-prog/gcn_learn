@@ -30,68 +30,67 @@
 本プロジェクトは、GCNベースのアクション認識フレームワークです。以下はディレクトリ構成と各ファイルの役割です。
 
 
-gcn_learn/
-├── main.py
-│ └─ 実行エントリポイント
-├── Processor.py
-│ └─ 実験全体の制御（train/test統合）
-│
-├── config/
-│ └── default.yaml
-│ └─ モデル・学習条件などの設定ファイル
-│
-├── dataset/
-│ ├── base_dataset.py
-│ │ └─ データセットの基底クラス
-│ ├── builder.py
-│ │ └─ データローダ生成
-│ ├── tools.py
-│ │ └─ 前処理・補助関数
-│ ├── leave_pair_out.py
-│ │ └─ データ分割手法
-│ └── walk_path_leave_pair_out.py
-│ └─ 特定の分割手法実装
-│
-├── data/
-│ └── loader.py
-│ └─ DataLoader 定義
-│
-├── model/
-│ ├── builder.py
-│ │ └─ モデル構築ヘルパ
-│ ├── st_gcn.py
-│ │ └─ ST-GCN モデル定義
-│ └── utils/
-│ └── tgcn.py
-│ └─ Temporal GCN モジュール
-│
-├── graph/
-│ ├── coco.py, h36m.py, pyskl.py
-│ │ └─ 関節構造（グラフ定義）
-│ └── tools.py
-│ └─ グラフユーティリティ
-│
-├── trainer/
-│ └── train_loop.py
-│ └─ 学習ループ管理
-│
-├── utils/
-│ ├── arg_parser.py
-│ │ └─ コマンドライン引数管理
-│ ├── seed.py
-│ │ └─ 乱数固定
-│ └── visualize.py
-│ └─ 可視化
-│
-├── results/
-│ └── work_dir/config.yaml
-│ └─ 実験ログ・結果保存先
-│
-└── vis/
-└── tmp.mp4
-└─ 可視化出力例
+gcn_learn/<br>
+├── main.py<br>
+│ └─ 実行エントリポイント<br>
+├── Processor.py<br>
+│ └─ 実験全体の制御（train/test統合）<br>
+│<br>
+├── config/<br>
+│ └── default.yaml<br>
+│ └─ モデル・学習条件などの設定ファイル<br>
+│<br>
+├── dataset/<br>
+│ ├── base_dataset.py<br>
+│ │ └─ データセットの基底クラス<br>
+│ ├── builder.py<br>
+│ │ └─ データローダ生成<br>
+│ ├── tools.py<br>
+│ │ └─ 前処理・補助関数<br>
+│ ├── leave_pair_out.py<br>
+│ │ └─ データ分割手法<br>
+│ └── walk_path_leave_pair_out.py<br>
+│ └─ 特定の分割手法実装<br>
+│<br>
+├── data/<br>
+│ └── loader.py<br>
+│ └─ DataLoader 定義<br>
+│<br>
+├── model/<br>
+│ ├── builder.py<br>
+│ │ └─ モデル構築ヘルパ<br>
+│ ├── st_gcn.py<br>
+│ │ └─ ST-GCN モデル定義<br>
+│ └── utils/<br>
+│ └── tgcn.py<br>
+│ └─ Temporal GCN モジュール<br>
+│<br>
+├── graph/<br>
+│ ├── coco.py, h36m.py, pyskl.py<br>
+│ │ └─ 関節構造（グラフ定義）<br>
+│ └── tools.py<br>
+│ └─ グラフユーティリティ<br>
+│<br>
+├── trainer/<br>
+│ └── train_loop.py<br>
+│ └─ 学習ループ管理<br>
+│<br>
+├── utils/<br>
+│ ├── arg_parser.py<br>
+│ │ └─ コマンドライン引数管理<br>
+│ ├── seed.py<br>
+│ │ └─ 乱数固定<br>
+│ └── visualize.py<br>
+│ └─ 可視化<br>
+│<br>
+├── results/<br>
+│ └── work_dir/config.yaml<br>
+│ └─ 実験ログ・結果保存先<br>
+│<br>
+└── vis/<br>
+└── tmp.mp4<br>
+└─ 可視化出力例<br>
 
 
 ---
 
-もし希望なら、**セットアップ方法や実行例、設定ファイルの使い方**まで含めたREADME完全版も作れます。作りますか？

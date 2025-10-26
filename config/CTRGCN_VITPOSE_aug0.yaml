@@ -1,10 +1,10 @@
 model: model.ctrgcn.Model
 
 model_args:
-  in_channels: 3
+  in_channels: 2
   num_person: 2
   num_class: 3
-  graph: graph.h36m.Graph
+  graph: graph.coco.Graph
 
 
   graph_args:
@@ -20,4 +20,4 @@ patience : 5
 leave_pair : [1,2,3,4]
 batch_size : 32
 data_augment:
-  random_scaling : True
+  joint_courruption : False

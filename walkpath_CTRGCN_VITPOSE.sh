@@ -9,8 +9,8 @@ do
     do
         for i in $(seq 1 13)
         do
-            python main.py --config config/aagcn_VITPOSE_aug0.yaml \
-            --work_dir ./results/walkpath/AAGCN/VITPOSE0/$t \
+            python main.py --config config/CTRGCN_VITPOSE_aug0.yaml \
+            --work_dir ./results/walkpath/CTRGCN/VITPOSE0/$t \
             --phase train \
             --evaluation_method walk_path_leave_pair_out \
             --train_data_path ./data/VITPOSE/$t/data.npy \
@@ -33,8 +33,8 @@ do
         do
             for i in $(seq 1 13)
             do
-                python main.py --config config/aagcn_VITPOSE_aug0.yaml \
-                --work_dir ./results/walkpath/AAGCN/VITPOSE0/$t \
+                python main.py --config config/CTRGCN_VITPOSE_aug0.yaml \
+                --work_dir ./results/walkpath/CTRGCN/VITPOSE0/$t \
                 --phase test \
                 --evaluation_method walk_path_leave_pair_out \
                 --train_data_path ./data/VITPOSE/$t/data.npy \
