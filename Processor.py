@@ -63,7 +63,6 @@ class Processor():
         if self.arg.phase == 'train':
             
             start_total = time.time()
-            save_path = os.path.join(self.arg.work_dir, "execution_time.npy")
             
             print("Starting train phase...")
             self.train()
@@ -72,8 +71,8 @@ class Processor():
             total_time = end_total - start_total
             
             print(f"Total training time: {total_time:.2f} sec")
-            np.save(save_path, np.array(total_time))
-
+            np.save(f'{self.work_dir}/results/time', np.array(total_time))
+        
         elif self.arg.phase == 'test':
             
             self.test_work_dir = f"{self.arg.work_dir}/test/{self.arg.train_walkpath[0]}-{self.arg.test_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"

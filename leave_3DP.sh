@@ -7,8 +7,8 @@ do
     do
         for i in $(seq 1 13)
         do
-            python main.py --config config/ctrgcn_3DP_aug0.yaml \
-            --work_dir ./results/leave_4_pair_out/CTRGCN/MB_3DP$aug/$t/$i \
+            python main.py --config config/default.yaml \
+            --work_dir ./results/leave_4_pair_out/time/MB_3DP$aug/$t/$i \
             --train_data_path ./data/MB_3DP/$t/data.npy \
             --train_label_path ./data/MB_3DP/$t/label.npy \
             --test_data_path ./data/MB_3DP/$t/data.npy \
