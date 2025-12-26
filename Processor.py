@@ -22,6 +22,11 @@ class Processor():
             self.work_dir = f"{self.arg.work_dir}/{self.arg.train_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
             print("*****************")
             print(self.work_dir)
+        
+        elif(self.arg.evaluation_method == "val2"):
+            self.work_dir = f"{self.arg.work_dir}/train_{self.arg.train_walkpath[0]}-{self.arg.train_walkpath[-1]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
+            print(self.work_dir)
+            
         else:
             self.work_dir = self.arg.work_dir
         
@@ -75,7 +80,11 @@ class Processor():
         
         elif self.arg.phase == 'test':
             
-            self.test_work_dir = f"{self.arg.work_dir}/test/{self.arg.train_walkpath[0]}-{self.arg.test_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
+            if self.arg.evaluation_method == "val2":
+                self.test_work_dir = f"{self.arg.work_dir}/test//train_{self.arg.train_walkpath[0]}-{self.arg.train_walkpath[-1]}_test_{self.arg.test_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
+            else:
+                self.test_work_dir = f"{self.arg.work_dir}/test/{self.arg.train_walkpath[0]}-{self.arg.test_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
+                
             if not os.path.exists(self.test_work_dir):
                 os.makedirs(self.test_work_dir)
             else:

@@ -1,0 +1,60 @@
+model: model.st_gcn.Model
+
+model_args:
+  in_channels: 3
+  num_person: 2
+  num_class: 3
+  graph: graph.h36m.Graph
+
+
+  graph_args:
+    labeling_mode: spatial
+
+
+loss : torch.nn.CrossEntropyLoss
+loss_args : {}
+
+num_epoch : 40
+patience : 5
+
+evaluation_method : leave_pair_out
+train_data_path : ./data/MB_3DP/1/data.npy
+train_label_path : ./data/MB_3DP/1/label.npy
+test_data_path : ./data/MB_3DP/1/data.npy
+test_label_path : ./data/MB_3DP/1/label.npy
+leave_pair : [1,2,3,4]
+batch_size : 32
+data_augment:
+  joint_courruption : True
+  random_move : True
+  joint_courruption : True
+  shear : True
+  gaussian_noise : True
+  random_rot : True
+  projection : True
+  random_translation : True
+  random_scaling : True
+
+
+  
+  # random_shift      : False
+  # random_choose     : False
+  # window_size       : False
+
+  # random_translation: False
+  # random_scaling    : False
+  # random_rot        : True
+  # random_move       : False
+  # projection        : False
+  # shear             : False
+  # gaussian_noise    : False
+  # joint_courruption : False
+  # joint_masking     : False
+  # random_noise      : False
+
+  # random_scaling_2d :     False
+  # random_translation_2d : False
+  # random_rotation_2d :    False
+  # gaussian_noise_2d :     False
+  # joint_courruption_2d :  False
+  # random_move_2d :        False

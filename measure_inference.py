@@ -37,8 +37,13 @@ def measure_inference(model, data, device="cuda"):
         _ = model(data)
     torch.cuda.synchronize()
     end_time = time.time()
+    
+    
+    # モデルのパラメータ数を計算
+    total_params = sum(param.numel() for param in model.parameters())
+    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
-    return (end_time - start_time) * 1000, torch.cuda.max_memory_allocated(device)/(1024**2)
+    return (end_time - start_time) * 1000, torch.cuda.max_memory_allocated(device)/(1024**2), total_params, trainable_params
 
 # -----------------------------
 # メイン処理
@@ -49,8 +54,6 @@ if __name__ == "__main__":
 
     config_dir = "config/default"
     models = ["stgcn", "aagcn", "ctrgcn"]
-    models = ["aagcn", "stgcn", "ctrgcn"]
-
 
     results = []
 
@@ -70,8 +73,10 @@ if __name__ == "__main__":
         # 入力データ（必要に応じて T, M を調整）
         sample_data = torch.randn(64, 3, 300, 17, 2)
 
-        time_ms, mem_mb = measure_inference(model, sample_data, device)
+        time_ms, mem_mb, total_p, trainable_p = measure_inference(model, sample_data, device)
         print(f"Time: {time_ms:.2f} ms | Memory: {mem_mb:.1f} MB")
+        print(f"totale_param : {total_p} , trainable_param : {trainable_p}")
+        print("")
 
         results.append([model_cfg, time_ms, mem_mb])
 

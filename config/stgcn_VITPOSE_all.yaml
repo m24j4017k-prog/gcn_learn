@@ -1,0 +1,28 @@
+model: model.st_gcn.Model
+
+model_args:
+  in_channels: 2
+  num_person: 2
+  num_class: 3
+  graph: graph.coco.Graph
+
+
+  graph_args:
+    labeling_mode: spatial
+
+
+loss : torch.nn.CrossEntropyLoss
+loss_args : {}
+
+num_epoch : 40
+patience : 5
+
+leave_pair : [1,2,3,4]
+batch_size : 32
+data_augment:
+  random_scaling_2d :     True
+  random_translation_2d : True
+  random_rotation_2d :    True
+  gaussian_noise_2d :     True
+  joint_courruption_2d :  True
+  random_move_2d :        True

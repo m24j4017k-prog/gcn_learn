@@ -29,7 +29,7 @@ def build_dataset(arg, split='train'):
             dataset_kwargs['leave_pair'] = arg.leave_pair
 
 
-    elif arg.evaluation_method == 'walk_path_leave_pair_out':
+    elif arg.evaluation_method == 'walk_path_leave_pair_out' or arg.evaluation_method == 'val2':
         print("this evaluation method is walk_path_leave_pair_out method")
         DatasetClass = WalkPathLeavePairOutTrainDataset if split=='train' else WalkPathLeavePairOutTestDataset
         dataset_kwargs = {
