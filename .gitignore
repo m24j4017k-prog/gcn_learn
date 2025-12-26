@@ -17,3 +17,5 @@ checkpoints/
 logs/
 runs/
 shfile/
+result/
+config/
