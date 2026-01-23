@@ -24,6 +24,40 @@ def mixup_criterion(criterion, pred, y_a, y_b, lam):
     return lam * criterion(pred, y_a) + (1 - lam) * criterion(pred, y_b)
 
 
+def get_cut_joint_matrix(data, cut_joint_size):
+    batch, c, t, v, m = data.size()
+    M = np.ones((batch, c, t, v, m), dtype=np.float32)
+
+    cut_joint = np.random.choice(np.arange(v), cut_joint_size, replace=False)
+    M[:, :, :, cut_joint, :] = 0
+
+    return torch.from_numpy(M).to(data.device)
+
+
+def cutmix_data(data, label, alpha):
+    if alpha > 0:
+        lam = np.random.beta(alpha, alpha)
+    else:
+        lam = 1.0
+
+    batch_size, _, _, v, _ = data.size()
+    index = torch.randperm(batch_size).to(data.device)
+
+    cut_joint_size = int(v * (1 - lam))
+    if cut_joint_size == 0:
+        return data, label, label, 1.0
+
+    M = get_cut_joint_matrix(data, cut_joint_size)
+
+    cutmixed_x = M * data + (1 - M) * data[index]
+
+    lam_adj = 1 - cut_joint_size / v
+    y_a, y_b = label, label[index]
+
+    return cutmixed_x, y_a, y_b, lam_adj
+
+
+
 def train_one_epoch(processor, epoch):
     model = processor.model
     optimizer = processor.optimizer
@@ -31,7 +65,9 @@ def train_one_epoch(processor, epoch):
     data_loader = processor.data_loader['train']
 
     use_mixup = getattr(processor.arg, 'use_mixup', False)
+    use_cutmix = getattr(processor.arg, 'use_cutmix', False)
     mixup_alpha = getattr(processor.arg, 'mixup_alpha', 0.5)
+    cutmix_alpha = getattr(processor.arg, 'cutmix_alpha', 0.5)
 
     model.train()
     total_loss, total_acc = 0, 0
@@ -45,11 +81,18 @@ def train_one_epoch(processor, epoch):
 
             optimizer.zero_grad()
 
-            if use_mixup:
-                label_onehot = torch.nn.functional.one_hot(label, num_classes=processor.arg.num_class).float()
-                mixed_data, y_a, y_b, lam = mixup_data(data, label_onehot, alpha=mixup_alpha, use_cuda=True)
-                output = model(mixed_data)
+            if use_cutmix:
+                data, y_a, y_b, lam = cutmix_data(data, label, alpha=cutmix_alpha)
+                output = model(data)
                 loss = lam * loss_fn(output, y_a) + (1 - lam) * loss_fn(output, y_b)
+
+            elif use_mixup:
+                data, y_a, y_b, lam = mixup_data(
+                    data, label, alpha=mixup_alpha, use_cuda=True
+                )
+                output = model(data)
+                loss = lam * loss_fn(output, y_a) + (1 - lam) * loss_fn(output, y_b)
+
             else:
                 output = model(data)
                 loss = loss_fn(output, label)

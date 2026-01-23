@@ -28,5 +28,7 @@ def get_parser():
     parser.add_argument('--nesterov', type=bool, default=False, help='use nesterov or not')
     parser.add_argument('--momentum', type=int, default=0.9)
     parser.add_argument('--patience', type=int, default=5, help='early_stopping patience')
+    parser.add_argument('--use_mixup', type=bool, default=False)
+    parser.add_argument('--use_cutmix', type=bool, default=False)
     
     return parser
