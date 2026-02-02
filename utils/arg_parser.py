@@ -30,5 +30,7 @@ def get_parser():
     parser.add_argument('--patience', type=int, default=5, help='early_stopping patience')
     parser.add_argument('--use_mixup', type=bool, default=False)
     parser.add_argument('--use_cutmix', type=bool, default=False)
+    parser.add_argument('--min_mov_num', type=int, default=50)
+    parser.add_argument('--num_pair', type=int, default=4)
     
     return parser

@@ -3,6 +3,7 @@ import torch
 import torch.optim as optim
 import numpy as np
 import time
+from collections import Counter
 
 from dataset.builder import build_dataset
 from model.builder import build_model
@@ -150,6 +151,10 @@ class Processor():
         self.model.eval()
         val_loss = 0
         val_acc = 0
+        
+        correct = 0
+        confusion_matrix = np.zeros((3, 3))
+        predicts = []
 
         with torch.no_grad():
             for data, label, index in self.data_loader['test']:
@@ -157,16 +162,35 @@ class Processor():
                 label = label.cuda()
                 
                 output = self.model(data)
+                _, predict = torch.max(output.data, 1)
+                predict = predict.to('cpu').detach().numpy().copy()
+                predicts += predict.tolist()
+                
                 loss = self.loss(output, label)
                 val_loss += loss.item() 
                 val_acc += (output.max(1)[1] == label).sum().item()
 
         avg_val_loss = val_loss / len(self.data_loader['test'].dataset)
         avg_val_acc = val_acc / len(self.data_loader['test'].dataset)
-        
         print (avg_val_loss, avg_val_acc)
+        
+        
+        # 投票
+        for i in range(self.arg.num_class *4 ): 
+            # 投票
+            # print(len(predicts))
+            # print(f"{i*(arg.min_mov_num)}-{i*(arg.min_mov_num)}")
+            a = predicts[(i)*(self.arg.min_mov_num):(i+1)*(self.arg.min_mov_num)]
+            count = Counter(a)
+            
+            most_common_value = count.most_common(1)[0][0]
+
+            # print(predicts)
+            # print(confusion_matrix)
+            confusion_matrix[i%3, most_common_value] += 1        
     
         # os.makedirs(f'{self.arg.save_dir}/results', exist_ok=True)
+        np.save(f'{self.test_work_dir}/conf_mat', confusion_matrix)
         np.save(f'{self.test_work_dir}/val_loss', avg_val_loss)
         np.save(f'{self.test_work_dir}/val_acc', avg_val_acc)
 
