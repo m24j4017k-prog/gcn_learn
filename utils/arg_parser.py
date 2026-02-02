@@ -32,5 +32,6 @@ def get_parser():
     parser.add_argument('--use_cutmix', type=bool, default=False)
     parser.add_argument('--min_mov_num', type=int, default=50)
     parser.add_argument('--num_pair', type=int, default=4)
+    parser.add_argument('--num_class', type=int, default=3)
     
     return parser

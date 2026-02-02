@@ -1,6 +1,6 @@
-path1="1 2 3 4"
-path2="1 2 3 4"
-try="1 2 3"
+path1="1"
+path2="1"
+try="1"
 augument="9"
 
 for aug in $augument
@@ -10,7 +10,7 @@ do
     do
         for leave_path in $path1
         do
-            for i in $(seq 1 13)
+            for i in $(seq 1 1)
             do
                 python main.py --config config/MB_3DP_aug$aug.yaml \
                 --work_dir ./results/val2/STGCN/MB_3DP_$aug/$t \
@@ -36,7 +36,7 @@ do
         do
             for test_path in $path2
             do
-                for i in $(seq 1 13)
+                for i in $(seq 1 1)
                 do
                     python main.py --config config/MB_3DP_aug$aug.yaml \
                     --work_dir ./results/val2/STGCN/MB_3DP_$aug/$t \

@@ -14,7 +14,7 @@ model_args:
 loss : torch.nn.CrossEntropyLoss
 loss_args : {}
 
-num_epoch : 2
+num_epoch : 40
 patience : 7
 
 evaluation_method : leave_pair_out
