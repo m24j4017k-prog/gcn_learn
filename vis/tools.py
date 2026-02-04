@@ -145,6 +145,7 @@ def motion2video_3d_two(motion, save_path, fps=25, keep_imgs=False, view=[90, 18
     # ベースカラー（人ごとに少し変える）
     base_colors = [
         ("#00457E", "#02315E", "#2F70AF"),  # person 0
+        ("#00457E", "#02315E", "#2F70AF"),
         ("#5E3C99", "#3F2A6D", "#8E7CC3"),  # person 1
         ("#006B3F", "#024F2E", "#2FAF7A")   # 3人以上用（必要なら追加）
     ]
