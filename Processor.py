@@ -83,6 +83,8 @@ class Processor():
             
             if self.arg.evaluation_method == "val2":
                 self.test_work_dir = f"{self.arg.work_dir}/test//train_{self.arg.train_walkpath[0]}-{self.arg.train_walkpath[-1]}_test_{self.arg.test_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
+            elif self.arg.evaluation_method == "leave_pair_out":
+                self.test_work_dir = f"{self.arg.work_dir}/test/"
             else:
                 self.test_work_dir = f"{self.arg.work_dir}/test/{self.arg.train_walkpath[0]}-{self.arg.test_walkpath[0]}/{self.arg.leave_pair[0]}-{self.arg.leave_pair[-1]}"
                 
@@ -93,7 +95,7 @@ class Processor():
             
 
             print("Starting test phase...")
-            self.model.load_state_dict(torch.load(f"{self.work_dir}/best_model.pt"))
+            self.model.load_state_dict(torch.load(f"{self.work_dir}/chekepoint1.pt"))
            
             
             self.test() 
@@ -175,8 +177,15 @@ class Processor():
         print (avg_val_loss, avg_val_acc)
         
         
+        if self.arg.evaluation_method == "val2":
+            num_test_data = self.arg.num_class *3
+        elif self.arg.evaluation_method == "leave_pair_out":
+            num_test_data = self.arg.num_class * 4 * 4
+        elif self.arg.evaluation_method == "walk_path":
+            num_test_data = self.arg.num_class * 4
+        
         # 投票
-        for i in range(self.arg.num_class *4 ): 
+        for i in range(self.arg.num_class *4 * 4): 
             # 投票
             # print(len(predicts))
             # print(f"{i*(arg.min_mov_num)}-{i*(arg.min_mov_num)}")
