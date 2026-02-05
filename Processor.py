@@ -95,7 +95,7 @@ class Processor():
             
 
             print("Starting test phase...")
-            self.model.load_state_dict(torch.load(f"{self.work_dir}/chekepoint1.pt"))
+            self.model.load_state_dict(torch.load(f"{self.work_dir}/best_model.pt"))
            
             
             self.test() 
