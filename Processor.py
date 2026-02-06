@@ -185,7 +185,7 @@ class Processor():
             num_test_data = self.arg.num_class * 4
         
         # 投票
-        for i in range(self.arg.num_class *4 * 4): 
+        for i in range(num_test_data): 
             # 投票
             # print(len(predicts))
             # print(f"{i*(arg.min_mov_num)}-{i*(arg.min_mov_num)}")
