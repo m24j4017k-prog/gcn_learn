@@ -181,7 +181,7 @@ class Processor():
             num_test_data = self.arg.num_class *3
         elif self.arg.evaluation_method == "leave_pair_out":
             num_test_data = self.arg.num_class * 4 * 4
-        elif self.arg.evaluation_method == "walk_path":
+        elif self.arg.evaluation_method == "walk_path_leave_pair_out":
             num_test_data = self.arg.num_class * 4
         
         # 投票
